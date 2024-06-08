@@ -1,0 +1,13 @@
+name: venv
+dependencies:
+  - dill
+  - h5py
+  - jupyter
+  - ipykernel
+  - matplotlib
+  - numba
+  - numpy
+  - pickleshare
+  - scikit-learn
+  - scipy
+  - conda-forge::graph-tool

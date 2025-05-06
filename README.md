@@ -113,33 +113,61 @@ Finally, save the simulated data with
 data.save(output_file_name)
 
 Here is a list of all configurable parameters. The unit for all time parameters is seconds:
+
 n - number of neurons in the simulated weight matrix
+
 sim dt - time step to use for simulation
+
 sample dt - time step to sample from the simulation
+
 interpolated dt - time interval for sampled data to be interpolated to
+
 sim tau - intrinsic cellular time constant for simulation
+
 nstims - number of different stimulations to simulate
+
 ntrials - a list of the number of trials to simulate for unperturbed saccades and each stimulation. The length of the list should be one greater than nstims
+
 saccade period - a two item list specifying the onset time and offset time of the saccade
+
 stim period - a two item list specifying the onset time and offset time of the stimulations
+
 sim duration - total amount of time to simulate for each trial
+
 saccade size - amplitude of saccadic input
+
 stim size - amplitude of stimulation input
+
 stim sign constraint - sets the sign of the stimulations. Can be a single number, which would apply to all neurons, or a list giving a different sign constraint for each neuron. Values should be either -1, 0, or 1. This constraint will apply to all stimulations in this simulation. If this configuration is not included, stimulations will be completely random.
+
 synaptic nonlinearity - nonlinearity to apply to synaptic input. Default is linear. Currently available nonlinearities are saturated linear and relu
+
 rate nonlinearity - nonlinearity to apply to firing rates. Default is linear. Currently available nonlinearities are saturated linear and relu
+
 neuronal noise - amplitude of neuronal noise
+
 measurements noise - amplitude of measurement noise
+
 measurement - specifies what quantity is measured. Can be either 'fluor' or 'rate'
+
 rate estimation - sets method for estimating firing rates. Can be either 'multiexp' to fit a sum of exponentials, '2dpen' to deconvolve with a penalty on the second derivative of the firing rate, or 'none' if firing rate is the measured quantity
+
 average trials - True/False, sets whether to average trials together within each stimulus condition
+
 cirf tau deconv - sets the CIRF time constant to use when estimating firing rates
+
 multiexp sac taus - list of time constants to set the available exponentials for the saccadic response in the multiexp fit
+
 multiexp stim taus - list of time constants to set the available exponentials for the stimulation response in the multiexp fit
+
 multiexp coef pen - if set greater than 0, applies an L1 penalty on the coefficients of the exponentials to encourage the multiexp fit to use the fewest number necessary to fit the fluorescence
+
 2dpen fixation - sets the magnitude of the second derivative penalty for time periods when the circuit is receiving no input
+
 2dpen input - sets the magnitude of the second derivative penalty for time periods when the circuit is receiving saccadic or stimulation input
+
 verbosity - used for debugging. Higher numbers mean print more information. Not likely to be very useful out of the box.
+
 base dir - sets the base directory to use when looking for data files
 
 
@@ -155,29 +183,53 @@ fit.save(output_file_name)
 That's all there is to it. All of the setup for the fit happens in the configuration file. Here is a list of all configurable parameters:
 
 fit method - can be either 'lsq' to just run a least-squares fit on the next-time-step cost function or 'clma' to run constrained Levenberg-Marquardt with geodesic acceleration on the full time series cost function.
+
 max iter - sets the maximum number of iterations for clma fit
+
 min iter - sets the minimum number of iterations for clma fit
+
 allow autapse - True/False toggle for allowing self connections
+
 allow tonic - True/False toggle for including tonic input in the fit
+
 allow inhibition - True/False toggle for allowing some connections to be inhibitory
+
 obey dale - True/False toggle for when inhibition is allowed that specifies whether to enforce Dale's Law
+
 max inhibition - for a fit with inhibitory connections allowed and Dale's Law enforced, sets the maximum fraction of cells that are allowed to be inhibitory
+
 include stims - True False toggle for whether to include perturbed trials in the fit
+
 regularization - adds a regularization on the weights to the fit. Should be a two-item list consisting of a string to set the type of regularization followed by a number to set the strength. Available regularizations are 'L1', 'L2', and 'NUC'.
+
 prior - string that determines how the regularization is applied to each weight. Default is 'uniform', which will put the same penalty on every weight. Other options have the form 'coordinate-shape' where coordinate is either 'tau', 'rc', or 'ml', and shape is either 'local', 'distal', 'feedforward', or 'feedback'. For instance, 'tau-local' will more heavily penalize connections between cells when the difference in their effective time constants is large, and 'rc-feedforward' will more heavily penalize connections when the presynaptic cell is located closer to the caudal end than the postsynaptic cell. Finally, this string could point to a file containing a weight matrix. In that case, the regularization will be applied uniformly to deviations of the fit matrix from this prior matrix. Note, the priors will not work with a nuclear norm regularization since it is a regularization on eigenvalues, not elements of the weight matrix.
+
 max weight - sets the maximum absolute value allowed for any individual element of the weight matrix
+
 max tonic - sets the maximum absolute value allowed for any individual tonic input
+
 max rate - sets the maximum value allowed for the initial firing rate
+
 min rate - sets the minimum value allowed for the initial firing rate
+
 synaptic nonlinearity - nonlinearity to apply to synaptic input. Default is linear. Currently available nonlinearities are saturated linear and relu
+
 rate nonlinearity - nonlinearity to apply to firing rates. Default is linear. Currently available nonlinearities are saturated linear and relu
+
 tau - intrinsic cellular time constant to use in the fit
+
 start - sets the start time for the fit relative to stimulation offset. Default is 0.5, which starts the fit 0.5 seconds after the time when the stimulation would be turned off.
+
 observed fraction - sets the fraction of cells in the network that are actually observed. These cells are chosen at random, and all information about the remaining cells is discarded.
+
 observed cells - takes a list of indices and sets exactly which cells are observed. This will override the observed fraction configuration
+
 whiten - True/False toggle for whether to whiten the firing rate data before fitting. Will be automatically set back to False if there are nonlinearities in the system
+
 r2method - sets the method to use for calculating an R^2 value for the fit. Default is 'avg', which will calculate the R^2 separately for each cell and report the average of those R^2 values. This is recommended since it makes the R^2 insensitive to any scaling of the firing rates. Setting this to anything other than 'avg' will cause the R^2 to be calculated for all cells together.
+
 verbosity - used for debugging. Higher numbers mean print more information. Not likely to be very useful out of the box.
+
 base dir - sets the base directory to use when looking for data files
 
 
